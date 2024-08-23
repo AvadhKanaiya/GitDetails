@@ -17,7 +17,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [savedUsers, setSavedUsers] = useState([]);
     const [loggedInUser, setLoggedInUser] = useState(null);
-    const [btnText, setBtnText] = useState("Save User");
+    const [btnText, setBtnText] = useState({});
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setLoggedInUser(currentUser);
@@ -64,12 +64,24 @@ export default function Home() {
         const isUserAlreadySaved = savedUsers.some(savedUser => savedUser.id === user.id);
 
         if (isUserAlreadySaved) {
-            setBtnText("Already Saved");
+            toast("This User is already in saved collection", {
+                icon: '🤝',
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                },
+                position: 'top-center'
+            })
             return;
         }
         savedUsers.push(user);
         localStorage.setItem("savedUsers", JSON.stringify(savedUsers));
         toast.success("user saved successfully");
+        setBtnText(prevState => ({
+            ...prevState,
+            [user.id]: "Saved"
+        }))
     };
 
     return (
@@ -154,9 +166,9 @@ export default function Home() {
                                                     <ExternalLinkIcon className="mr-2 h-4 w-4" />
                                                     View Profile
                                                 </Button>
-                                                <Button onClick={() => saveUserToLocal(user)}>
+                                                <Button onClick={() => saveUserToLocal(user)} key={user.id}>
                                                     <SaveIcon className="mr-2 h-4 w-4" />
-                                                    {btnText}
+                                                    {btnText[user.id] || "Save User"}
                                                 </Button>
                                             </CardFooter>
                                         </Card>
