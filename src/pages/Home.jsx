@@ -17,6 +17,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [savedUsers, setSavedUsers] = useState([]);
     const [loggedInUser, setLoggedInUser] = useState(null);
+    const [btnText, setBtnText] = useState("Save User");
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setLoggedInUser(currentUser);
@@ -63,7 +64,7 @@ export default function Home() {
         const isUserAlreadySaved = savedUsers.some(savedUser => savedUser.id === user.id);
 
         if (isUserAlreadySaved) {
-            toast.error("User is already saved");
+            setBtnText("Already Saved");
             return;
         }
         savedUsers.push(user);
@@ -155,7 +156,7 @@ export default function Home() {
                                                 </Button>
                                                 <Button onClick={() => saveUserToLocal(user)}>
                                                     <SaveIcon className="mr-2 h-4 w-4" />
-                                                    Save User
+                                                    {btnText}
                                                 </Button>
                                             </CardFooter>
                                         </Card>
