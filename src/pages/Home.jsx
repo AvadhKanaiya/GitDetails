@@ -60,6 +60,12 @@ export default function Home() {
 
     const saveUserToLocal = (user) => {
         let savedUsers = JSON.parse(localStorage.getItem("savedUsers")) || [];
+        const isUserAlreadySaved = savedUsers.some(savedUser => savedUser.id === user.id);
+
+        if (isUserAlreadySaved) {
+            toast.error("User is already saved");
+            return;
+        }
         savedUsers.push(user);
         localStorage.setItem("savedUsers", JSON.stringify(savedUsers));
         toast.success("user saved successfully");
