@@ -32,10 +32,14 @@ export default function SavedUser() {
         localStorage.setItem('savedUsers', JSON.stringify(updatedUsers));
     };
 
+    const viewProfile = (url) => {
+        window.open(url, '_blank');
+    }
+
     return (
         <>
-        {
-            loggedInUser?(
+            {
+                loggedInUser ? (
                     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
                         <header className="bg-white shadow">
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -94,7 +98,7 @@ export default function SavedUser() {
                                                 </div>
                                             </CardContent>
                                             <CardFooter className="flex justify-between">
-                                                <Button variant="outline" as="a" href={user.html_url} target="_blank">
+                                                <Button variant="outline" as="a" onClick={() => viewProfile(user.html_url)} >
                                                     <ExternalLinkIcon className="mr-2 h-4 w-4" />
                                                     View Profile
                                                 </Button>
@@ -109,10 +113,10 @@ export default function SavedUser() {
                             </div>
                         </main>
                     </div>
-            ):(
-                <Login/>
-            )
-        }
+                ) : (
+                    <Login />
+                )
+            }
 
         </>
     );
